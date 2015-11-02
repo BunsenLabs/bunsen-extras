@@ -14,6 +14,7 @@
 #                                   has the newer saved bg config file)
 #                       Alt Menu (dmenu)
 #                       Lightdm login gtk greeter
+#                       Terminator config
 #
 # Paths are assumed to be BunsenLabs defaults
 #
@@ -60,6 +61,8 @@ TZEN=0
 NUMDIRS=0
 CONKYCMD=""
 ### CONFIGS VARIABLES
+TERMDIR="$HOME/.config/terminator"
+TERMFILE="$TERMDIR/config"
 FEHFILE="$HOME/.fehbg"
 NITRODIR="$HOME/.config/nitrogen"
 NITROFILE="$NITRODIR/bg-saved.cfg"
@@ -83,6 +86,7 @@ PICKBG="Background Wallpaper"
 PICKDMENU="dmenu (Alt menu)"
 PICKLDM="Lightdm Login theme"
 PICKSCROT="Save screenshot"
+PICKTERM="Terminator"
 ### END CONFIGS VARIABLES
 
 ### DIALOG VARIABLES
@@ -503,6 +507,16 @@ function getLightdm(){
     fi
 }
 
+function getTerminator(){
+    if [[ -e $TERMFILE ]];then
+        cp "$TERMFILE" "$CONFIGDIR"
+        TXT="Terminator config:  $TERMFILE\n"
+        echo -e "\n  Saved $TXT"
+        echo "[TERMINATOR]" >> "$SETTINGS"
+        echo "$TXT" >> "$LISTMSG"
+    fi
+}
+
 function checkTint2(){   # kill or restart tint2s for screenshot, if necessary
     if [[ $1 = stop ]];then
         if ! cat "$SETTINGS" | grep "TINT2" &>/dev/null;then
@@ -703,6 +717,19 @@ function restoreLightdm(){   # need sudo to restore lightdm-gtk-greeter.conf
     done
 }
 
+function restoreTerminator(){
+    TFILE="$1"
+    if [[ -e $TERMDIR ]];then        # backup DMENU first
+        TERMBKP="$TERMDIR/config.bkp"
+        cp "$TFILE" "$TERMBKP"
+        cp "$TFILE" "$TERMDIR/config"
+        echo -e "\n  $TERMDIR/config backed up and restored"
+    else
+        cp "$TFILE" "$TERMDIR/config"
+        echo -e "\n  $TERMDIR/config restored"
+    fi
+}
+
 function reloadGTK(){ # reload gtk theme after restoring saved config
 python - <<END
 import gtk
@@ -743,6 +770,11 @@ function saveSettings(){
         "FALSE" "$PICKDMENU" \
         "FALSE" "$PICKLDM" \
         )
+    # add terminator to array if set as default
+    if  echo $(readlink -f /usr/bin/x-terminal-emulator ) | grep terminator &>/dev/null;then 
+        COLUMNS=("${COLUMNS[@]}" "FALSE" "$PICKTERM")
+    fi
+    
     SLOOP=1
     while (( $SLOOP == 1 ));do
         CHOICE=$($DIALOG --list --checklist --title \
@@ -795,6 +827,8 @@ function saveSettings(){
                         "$PICKDMENU")   getDmenu
                                         ;;
                         "$PICKLDM"  )   getLightdm
+                                        ;;
+                        "$PICKTERM" )   getTerminator
                                         ;;
                         *           )   echo -e "\n  Unknown value!" 2>&1
                                         exit 1
@@ -995,6 +1029,8 @@ function restoreSettings(){
             "[DMENU]"       )   restoreDmenu "$FPATH/$DMENU"
                                 ;;
             "[LIGHTDM]"     )   restoreLightdm "$FPATH/$LDM"
+                                ;;
+            "[TERMINATOR]"  )   restoreTerminator "$FPATH/config"
                                 ;;
             *               )   echo -e "  Unknown value!" 2>&1
                                 restoreSettings
