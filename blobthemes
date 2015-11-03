@@ -569,12 +569,11 @@ function getScrot(){
     # unless Conkys weren't selected to be saved
     if cat "$SETTINGS" | grep "CONKY" &>/dev/null;then
         for CONK in $(xdotool search --classname "Conky");do
-            xdotool windowactivate "$CONK"
+            xdotool windowactivate "$CONK" 2>/dev/null
         done
     fi
     checkTint2 stop     # stop running Tint2s for the scrot,
                         # if not selected to be saved
-
     # start lxappearance
     lxappearance &
     pid=$!
@@ -609,12 +608,12 @@ function getScrot(){
         WINDOW=$(echo $line | awk '{print $1}') # Window_ID is first field
         DTOP=$(echo $line | awk '{print $2}' )  # Desktop number is second field
         if (( $DTOP == $CURRDTOP )) &>/dev/null;then
-            xdotool windowactivate "$WINDOW"
+            xdotool windowactivate "$WINDOW" 2>/dev/null
         fi
     done < "$TMPSCROT"
     # restore any hidden Conkys
     for CONK in $(xdotool search --classname "Conky");do
-        xdotool windowactivate "$CONK"
+        xdotool windowactivate "$CONK" 2>/dev/null
     done
     checkTint2 start        # restore any stopped Tint2s
     rm -f "$TMPSCROT"
@@ -719,7 +718,7 @@ function restoreLightdm(){   # need sudo to restore lightdm-gtk-greeter.conf
 
 function restoreTerminator(){
     TFILE="$1"
-    if [[ -e $TERMDIR ]];then        # backup DMENU first
+    if [[ -e $TERMDIR ]];then        # backup terminator/config first
         TERMBKP="$TERMDIR/config.bkp"
         cp "$TFILE" "$TERMBKP"
         cp "$TFILE" "$TERMDIR/config"
