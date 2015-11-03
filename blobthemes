@@ -1020,7 +1020,7 @@ function restoreSettings(){
                                 ;;
             "[BACKGROUND]"  )   if [[ $VAL = FEH ]];then
                                     cp "$FPATH/.fehbg" "$HOME"
-                                    eval $(cat ~/.fehbg)
+                                    source "$HOME/.fehbg"
                                 else
                                     cp "$FPATH/bg-saved.cfg" "$NITRODIR"
                                     nitrogen --restore
