@@ -1,4 +1,4 @@
-**blOB** - a BunsenLabs Openbox Configuration Manager
+BLOB - a BunsenLabs Openbox Configuration Manager
 
 README
 
@@ -39,10 +39,8 @@ MOUSECMD variables. Set the variable "KEYDOWN" to where "Preferences" is
 in the root-menu (or anything else you might want displayed).
 
 ****************************************************************************
-#
-# KNOWN ISSUES:
-# Virtualbox does not allow the guest to move the host mouse cursor, using xdotool,
-# so the screenshot may produce an incorrect theme displayed and/or poor positioning.
-# A workaround is to move the cursor to some free space, and use the "Enter" key in the
-# "Configurations to be saved:" dialog.
-#
+KNOWN ISSUES:
+Virtualbox does not allow the guest to move the host mouse cursor, using xdotool,
+so the screenshot may produce an incorrect theme displayed and/or poor positioning.
+A workaround is to move the cursor to some free space, and use the "Enter" key in the
+"Configurations to be saved:" dialog.
