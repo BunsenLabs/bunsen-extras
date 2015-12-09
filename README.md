@@ -14,7 +14,8 @@ Save options are for  Conky(s)
                                   has the newer saved bg config file)
                       Alt Menu (dmenu)
                       Lightdm login gtk greeter
-                      Terminator config
+                      Terminator config (if set as default term)
+		      X Colors
 
 Paths are assumed to be BunsenLabs defaults.
 
