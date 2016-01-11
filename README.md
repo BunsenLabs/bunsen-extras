@@ -1,20 +1,22 @@
-BLOB - a BunsenLabs Openbox Configuration Manager
+# BLOB - a BunsenLabs Openbox Configuration Manager
 
 README
 
-blobthemes: script to save or restore openbox gui configurations
+*blobthemes*: script to save or restore Openbox gui configurations
 
 (Requires yad, wmctrl, xdotool, xrandr, nitrogen|feh, scrot)
 
-Save options are for  Conky(s)
-                      Tint2(s)
-                      Openbox theme
-                      GTK theme
-                      Background (uses Nitrogen or feh, depending which
+Save options are for
+  - Conky(s)
+  - Tint2(s)
+  - Openbox theme
+  - GTK theme
+  - Background (uses Nitrogen or feh, depending which
                                   has the newer saved bg config file)
-                      Alt Menu (dmenu)
-                      Lightdm login gtk greeter
-                      Terminator config
+  - Alt Menu (dmenu)
+  - Lightdm login gtk greeter
+  - Terminator config (if set as default term)
+  - X Colors
 
 Paths are assumed to be BunsenLabs defaults.
 
